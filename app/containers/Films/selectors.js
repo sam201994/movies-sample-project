@@ -5,19 +5,7 @@
  */
 
 import { createSelector } from 'reselect';
-
-function filterFilms(films, searchTerms) {
-  if (Object.keys(searchTerms) == 0) return films;
-  return films.filter(film => {
-    if (
-      film.title.includes(searchTerms.title) ||
-      film.genre.includes(searchTerms.genre)
-    )
-      return true;
-
-    return false;
-  });
-}
+import Utils from './utils'
 
 /*
  * Domain selectors
@@ -29,7 +17,7 @@ const selectFilmsState = state => state.films;
 
 const selectFilmsData = createSelector(
   selectFilmsState,
-  films => filterFilms(films.data, films.searchTerms),
+  films => Utils.filterFilms(films.data, films.searchTerms),
 );
 
 export default {

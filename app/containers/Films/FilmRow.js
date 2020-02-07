@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { MdEdit, MdBackspace, MdSave, MdWarning } from 'react-icons/md';
 import FilmActions from './actions';
+import Utils from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -84,15 +85,25 @@ const ActionContainer = styled.div`
 class FilmRow extends Component {
   state = { edit: false, form: {} };
 
-  handleChange = (key, event) => {
+  updateState = (key, value) => {
     const { form } = this.state;
     const newFormValue = {
       ...form,
-      [key]: event.target.value,
+      [key]: value,
     };
     this.setState({
       form: newFormValue,
     });
+  };
+
+  handleChange = (key, event) => {
+    if (key === 'views') {
+      if (Utils.validateNumericField(event.target.value) || event.target.value == '') {
+        this.updateState(key, event.target.value);
+      }
+    } else {
+      this.updateState(key, event.target.value);
+    }
   };
 
   handleSaveData = () => {
